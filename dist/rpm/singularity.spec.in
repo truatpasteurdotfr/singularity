@@ -37,6 +37,7 @@ License: BSD-3-Clause-LBNL
 Group: System Environment/Base
 URL: https://www.sylabs.io/singularity/
 Source: %{name}-%{version}.tar.gz
+Source1: go%{goversion}.linux-amd64.tar.gz
 ExclusiveOS: linux
 BuildRoot: %{?_tmppath}%{!?_tmppath:/var/tmp}/%{name}-%{version}-%{release}-root
 BuildRequires: wget
@@ -73,9 +74,10 @@ mkdir %{name}-%{version}
 cd %{name}-%{version}
 
 #XXX: We would like to remove the download of Go in the future
-GOTAR=go%{goversion}.linux-amd64.tar.gz
-wget https://dl.google.com/go/$GOTAR
-tar -xf $GOTAR
+#GOTAR=go%{goversion}.linux-amd64.tar.gz
+#wget https://dl.google.com/go/$GOTAR
+#tar -xf $GOTAR
+tar -xf %{SOURCE1}
 
 mkdir -p gopath/%{singgopath}
 tar -C "gopath/src/github.com/sylabs/" -xf "%SOURCE0"
