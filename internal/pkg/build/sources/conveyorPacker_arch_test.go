@@ -11,12 +11,12 @@ import (
 	"testing"
 
 	"github.com/sylabs/singularity/internal/pkg/build/sources"
-	"github.com/sylabs/singularity/internal/pkg/build/types"
-	"github.com/sylabs/singularity/internal/pkg/build/types/parser"
 	"github.com/sylabs/singularity/internal/pkg/test"
+	"github.com/sylabs/singularity/pkg/build/types"
+	"github.com/sylabs/singularity/pkg/build/types/parser"
 )
 
-const archDef = "../testdata_good/arch/arch"
+const archDef = "../../../../examples/arch/Singularity"
 
 func TestArchConveyor(t *testing.T) {
 
@@ -37,7 +37,7 @@ func TestArchConveyor(t *testing.T) {
 	defer defFile.Close()
 
 	// create bundle to build into
-	b, err := types.NewBundle("sbuild-arch")
+	b, err := types.NewBundle("", "sbuild-arch")
 	if err != nil {
 		return
 	}
@@ -71,7 +71,7 @@ func TestArchPacker(t *testing.T) {
 	defer defFile.Close()
 
 	// create bundle to build into
-	b, err := types.NewBundle("sbuild-arch")
+	b, err := types.NewBundle("", "sbuild-arch")
 	if err != nil {
 		return
 	}

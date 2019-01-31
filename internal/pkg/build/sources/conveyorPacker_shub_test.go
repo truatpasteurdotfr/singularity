@@ -9,8 +9,8 @@ import (
 	"testing"
 
 	"github.com/sylabs/singularity/internal/pkg/build/sources"
-	"github.com/sylabs/singularity/internal/pkg/build/types"
 	"github.com/sylabs/singularity/internal/pkg/test"
+	"github.com/sylabs/singularity/pkg/build/types"
 )
 
 const (
@@ -27,7 +27,7 @@ func TestShubConveyor(t *testing.T) {
 	test.DropPrivilege(t)
 	defer test.ResetPrivilege(t)
 
-	b, err := types.NewBundle("sbuild-shub")
+	b, err := types.NewBundle("", "sbuild-shub")
 	if err != nil {
 		return
 	}
@@ -52,7 +52,7 @@ func TestShubPacker(t *testing.T) {
 	test.DropPrivilege(t)
 	defer test.ResetPrivilege(t)
 
-	b, err := types.NewBundle("sbuild-shub")
+	b, err := types.NewBundle("", "sbuild-shub")
 	if err != nil {
 		return
 	}

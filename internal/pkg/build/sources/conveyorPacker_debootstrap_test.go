@@ -10,8 +10,8 @@ import (
 	"testing"
 
 	"github.com/sylabs/singularity/internal/pkg/build/sources"
-	"github.com/sylabs/singularity/internal/pkg/build/types"
 	"github.com/sylabs/singularity/internal/pkg/test"
+	"github.com/sylabs/singularity/pkg/build/types"
 )
 
 func TestDebootstrapConveyor(t *testing.T) {
@@ -26,7 +26,7 @@ func TestDebootstrapConveyor(t *testing.T) {
 
 	test.EnsurePrivilege(t)
 
-	b, err := types.NewBundle("sbuild-debootstrap")
+	b, err := types.NewBundle("", "sbuild-debootstrap")
 	if err != nil {
 		return
 	}
@@ -56,7 +56,7 @@ func TestDebootstrapPacker(t *testing.T) {
 
 	test.EnsurePrivilege(t)
 
-	b, err := types.NewBundle("sbuild-debootstrap")
+	b, err := types.NewBundle("", "sbuild-debootstrap")
 	if err != nil {
 		return
 	}

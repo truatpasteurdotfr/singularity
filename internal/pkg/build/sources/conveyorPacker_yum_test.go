@@ -10,12 +10,12 @@ import (
 	"os/exec"
 	"testing"
 
-	"github.com/sylabs/singularity/internal/pkg/build/types"
-	"github.com/sylabs/singularity/internal/pkg/build/types/parser"
 	"github.com/sylabs/singularity/internal/pkg/test"
+	"github.com/sylabs/singularity/pkg/build/types"
+	"github.com/sylabs/singularity/pkg/build/types/parser"
 )
 
-const yumDef = "../testdata_good/yum/yum"
+const yumDef = "../../../../examples/centos/Singularity"
 
 func TestYumConveyor(t *testing.T) {
 	if testing.Short() {
@@ -37,7 +37,7 @@ func TestYumConveyor(t *testing.T) {
 	defer defFile.Close()
 
 	// create bundle to build into
-	b, err := types.NewBundle("sbuild-yum")
+	b, err := types.NewBundle("", "sbuild-yum")
 	if err != nil {
 		return
 	}
@@ -73,7 +73,7 @@ func TestYumPacker(t *testing.T) {
 	defer defFile.Close()
 
 	// create bundle to build into
-	b, err := types.NewBundle("sbuild-yum")
+	b, err := types.NewBundle("", "sbuild-yum")
 	if err != nil {
 		return
 	}

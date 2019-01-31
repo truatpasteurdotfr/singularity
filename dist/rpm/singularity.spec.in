@@ -21,7 +21,6 @@
 # 
 # 
 
-%define goversion @GO_VERSION@
 %define singgopath src/github.com/sylabs/singularity
 
 # Disable debugsource packages; otherwise it ends up with an empty %files
@@ -37,10 +36,13 @@ License: BSD-3-Clause-LBNL
 Group: System Environment/Base
 URL: https://www.sylabs.io/singularity/
 Source: %{name}-%{version}.tar.gz
-Source1: go%{goversion}.linux-amd64.tar.gz
 ExclusiveOS: linux
 BuildRoot: %{?_tmppath}%{!?_tmppath:/var/tmp}/%{name}-%{version}-%{release}-root
-BuildRequires: wget
+%if "%{_target_vendor}" == "suse"
+BuildRequires: go
+%else
+BuildRequires: golang
+%endif
 BuildRequires: git
 BuildRequires: gcc
 BuildRequires: make
@@ -55,6 +57,8 @@ Requires: squashfs
 Requires: squashfs-tools
 %endif
 
+# there's no golang for ppc64, just ppc64le
+ExcludeArch: ppc64
 
 Provides: %{name}-runtime
 Obsoletes: %{name}-runtime
@@ -73,18 +77,19 @@ mkdir %{name}-%{version}
 %build
 cd %{name}-%{version}
 
+<<<<<<< HEAD
 #XXX: We would like to remove the download of Go in the future
-#GOTAR=go%{goversion}.linux-amd64.tar.gz
-#wget https://dl.google.com/go/$GOTAR
-#tar -xf $GOTAR
-tar -xf %{SOURCE1}
+GOTAR=go%{goversion}.linux-amd64.tar.gz
+wget https://dl.google.com/go/$GOTAR
+tar -xf $GOTAR
 
+=======
+>>>>>>> upstream/master
 mkdir -p gopath/%{singgopath}
 tar -C "gopath/src/github.com/sylabs/" -xf "%SOURCE0"
 
-export GOROOT=$PWD/go
 export GOPATH=$PWD/gopath
-export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
+export PATH=$GOPATH/bin:$PATH
 cd $GOPATH/%{singgopath}
 
 ./mconfig -V %{version}-%{release} --prefix=%{_prefix} --exec-prefix=%{_exec_prefix} \
@@ -93,21 +98,18 @@ cd $GOPATH/%{singgopath}
 	--libdir=%{_libdir}
 
 cd builddir
-make
+make old_config=
 
 %install
 cd %{name}-%{version}
 
-export GOROOT=$PWD/go
 export GOPATH=$PWD/gopath
-export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
+export PATH=$GOPATH/bin:$PATH
 cd $GOPATH/%{singgopath}/builddir
 
-# We're making an assumption here, that EXECPREFIX will be /usr,
-# but share/man/man1 is hard coded in Makefile.stubs. We don't have
-# an equivalent to set %{_mandir}, or what it's derived from.
-mkdir -p $RPM_BUILD_ROOT/usr/share/man/man1
+mkdir -p $RPM_BUILD_ROOT%{_mandir}/man1
 make DESTDIR=$RPM_BUILD_ROOT install man
+chmod 644 $RPM_BUILD_ROOT%{_sysconfdir}/singularity/actions/*
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -120,6 +122,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_libexecdir}/singularity/cni/*
 %dir %{_sysconfdir}/singularity
 %config(noreplace) %{_sysconfdir}/singularity/*
+%attr(755, root, root) %{_sysconfdir}/singularity/actions/exec
+%attr(755, root, root) %{_sysconfdir}/singularity/actions/run
+%attr(755, root, root) %{_sysconfdir}/singularity/actions/shell
+%attr(755, root, root) %{_sysconfdir}/singularity/actions/start
+%attr(755, root, root) %{_sysconfdir}/singularity/actions/test
 %dir %{_sysconfdir}/bash_completion.d
 %{_sysconfdir}/bash_completion.d/*
 %dir %{_localstatedir}/singularity

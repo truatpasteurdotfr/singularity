@@ -19,9 +19,11 @@ type MkdirArgs struct {
 
 // LoopArgs defines the arguments to create a loop device.
 type LoopArgs struct {
-	Image string
-	Mode  int
-	Info  loop.Info64
+	Image      string
+	Mode       int
+	Info       loop.Info64
+	MaxDevices int
+	Shared     bool
 }
 
 // MountArgs defines the arguments to mount.
@@ -35,8 +37,8 @@ type MountArgs struct {
 
 // ChrootArgs defines the arguments to chroot.
 type ChrootArgs struct {
-	Root     string
-	UsePivot bool
+	Root   string
+	Method string
 }
 
 // HostnameArgs defines the arguments to sethostname.

@@ -9,8 +9,8 @@ import (
 	"testing"
 
 	"github.com/sylabs/singularity/internal/pkg/build/sources"
-	"github.com/sylabs/singularity/internal/pkg/build/types"
 	"github.com/sylabs/singularity/internal/pkg/test"
+	"github.com/sylabs/singularity/pkg/build/types"
 )
 
 const (
@@ -26,7 +26,7 @@ func TestLibraryConveyor(t *testing.T) {
 
 	test.EnsurePrivilege(t)
 
-	b, err := types.NewBundle("sbuild-library")
+	b, err := types.NewBundle("", "sbuild-library")
 	if err != nil {
 		return
 	}
@@ -52,7 +52,7 @@ func TestLibraryConveyor(t *testing.T) {
 func TestLibraryPacker(t *testing.T) {
 	test.EnsurePrivilege(t)
 
-	b, err := types.NewBundle("sbuild-library")
+	b, err := types.NewBundle("", "sbuild-library")
 	if err != nil {
 		return
 	}
